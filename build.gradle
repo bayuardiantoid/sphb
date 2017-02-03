@@ -1,0 +1,95 @@
+group "com.beye.hbm"
+version "1.0-SNAPSHOT"
+
+
+apply plugin: "java"
+apply plugin: "war"
+apply plugin: "idea"
+
+sourceCompatibility = 1.7
+
+def springVer = "4.2.8.RELEASE"
+def hibernateVer = "4.3.11.Final"
+def springBootVer = "1.2.8.RELEASE"
+def mainClass = "com.beye.hbm.app.Application"
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ["src/main/java"]
+        }
+        resources {
+            srcDirs = ["src/main/resources"]
+        }
+
+    }
+
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.beye.hbm.app.Application',
+                'Class-Path': { configurations.compile.collect { it.getName() }.join(' ') }
+
+    }
+}
+
+
+war {
+
+}
+
+
+dependencies {
+    //common
+
+
+    //spring
+    compile("org.springframework:spring-core:${springVer}")
+    compile("org.springframework:spring-beans:${springVer}")
+    compile("org.springframework:spring-context:${springVer}")
+    compile("org.springframework:spring-tx:${springVer}")
+    compile("org.springframework:spring-orm:${springVer}")
+    compile("org.springframework:spring-web:${springVer}")
+    compile("org.springframework:spring-webmvc:${springVer}")
+    compile("org.springframework:spring-test:${springVer}")
+
+    //spring boot
+    compile("org.springframework.boot:spring-boot-starters:${springBootVer}")
+    compile("org.springframework.boot:spring-boot-starter-web:${springBootVer}")
+
+    //hibernate
+    compile("org.hibernate:hibernate-core:${hibernateVer}")
+    compile("org.hibernate:hibernate-entitymanager:${hibernateVer}")
+
+    //slf4j
+    //compile("org.slf4j:slf4j-log4j12:1.6.6")
+    compile("org.slf4j:slf4j-api:1.6.6")
+
+    //json
+    compile("com.fasterxml.jackson.core:jackson-core:2.5.5")
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-hibernate4:2.5.5")
+
+
+    //mysql
+    compile("mysql:mysql-connector-java:5.1.40")
+
+    //commons
+    compile("commons-dbcp:commons-dbcp:1.4")
+
+    //test dependencies
+    testCompile("org.mockito:mockito-core:2.3.0")
+    testCompile("org.hamcrest:hamcrest-core:1.3")
+    testCompile("junit:junit:4.12")
+}
+
+task execute(type: JavaExec) {
+    main = mainClass
+    classpath = sourceSets.main.runtimeClasspath
+}
